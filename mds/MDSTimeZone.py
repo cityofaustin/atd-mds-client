@@ -1,3 +1,15 @@
+"""
+Class: MDSTimeZone
+
+Author: Austin Transportation Department, Data and Technology Services
+
+Description: The purpose of this class is to generate time-zone aware
+python date-times that can be passed to the MDS client.
+
+The application requires the pytz library:
+    https://pypi.org/project/pytz/
+"""
+
 from datetime import datetime, timedelta
 import pytz
 
