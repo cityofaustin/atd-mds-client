@@ -25,17 +25,19 @@ jobs:
           name: "Installing dependencies"
           command: |
             sudo pip install setuptools wheel twine bumpversion
-            source .circleci/pypi-helper.sh
 
       - run:
           name: "Building Package"
           command: |
+            source .circleci/pypi-helper.sh
             mds_patch_package_name
             mds_build_package
 
       - run:
           name: "Deploy Package"
-          command: mds_deploy_package
+          command: |
+            source .circleci/pypi-helper.sh
+            mds_deploy_package
 
 workflows:
   version: 2.1
