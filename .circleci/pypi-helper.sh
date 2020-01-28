@@ -61,5 +61,5 @@ function mds_build_package {
 function mds_deploy_package {
     print_header "mds_deploy_package() deploying package...";
     print_log "mds_deploy_package() twine upload --repository-url https://upload.pypi.org/legacy/ dist/*;"
-    #twine upload --repository-url https://upload.pypi.org/legacy/ dist/*;
+    twine upload --repository-url https://upload.pypi.org/legacy/ dist/*;
 }
