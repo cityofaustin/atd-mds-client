@@ -1,5 +1,14 @@
 """
+Class: MDSClient
 
+Author: Austin Transportation Department, Data and Technology Services
+
+Description: The purpose of this class is to provide an extensible architecture that
+allows different MDS client versions, it basically acts as an abstraction layer
+and the actual implementation is unique per MDS client class.
+
+The application requires the requests library:
+    https://pypi.org/project/requests/
 """
 from .clients import *
 from .MDSAuth import MDSAuth
