@@ -5,12 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="atd-mds-client",
-    version="0.0.2",
+    version="0.0.3",
     author="City of Austin",
     author_email="transportation.data@austintexas.gov",
     description="A Python utility to interact data endpoints compliant with the Mobility Data Specification, as designed by the Open Mobility Foundation",
     install_requires=[
       'requests',
+      'pytz',
     ],
     long_description=long_description,
     long_description_content_type="text/markdown",
