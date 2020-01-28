@@ -1,6 +1,17 @@
+"""
+Class: MDSClientBase
+
+Author: Austin Transportation Department, Data and Technology Services
+
+Description: The purpose of this class is to provide a blueprint design
+and basic shared functionality for all derived MDS classes.
+
+The application requires the requests library:
+    https://pypi.org/project/requests/
+"""
+
 import time
 import requests
-from requests.exceptions import Timeout
 
 # Debug & Logging
 import logging
