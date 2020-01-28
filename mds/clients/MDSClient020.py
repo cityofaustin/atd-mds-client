@@ -1,3 +1,16 @@
+"""
+Class: MDSClient020
+
+Author: Austin Transportation Department, Data and Technology Services
+
+Description: The purpose of this class is to provide an extension of the MDSClientBase
+class that is compatible with version 0.2.X of the Mobility Data Specification (MDS).
+https://github.com/openmobilityfoundation/mobility-data-specification/tree/0.2.x/provider
+
+The application requires the requests library:
+    https://pypi.org/project/requests/
+"""
+
 from .MDSClientBase import MDSClientBase
 
 # Debug & Logging
