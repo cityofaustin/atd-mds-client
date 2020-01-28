@@ -1,0 +1,49 @@
+#
+# CircleCI Package builder for data utilities
+# Austin Transportation Department
+#
+# This is a package builder for the python utility packages
+# found in https://github.com/cityofaustin/atd-data-utilities/
+#
+
+version: 2.1
+
+
+jobs:
+  #
+  # Our entry point
+  #
+  build:
+    # We are going to pick a stable python distribution
+    docker:
+      - image: circleci/python:3.7
+
+    # Our build steps
+    steps:
+      - checkout
+      - run:
+          name: "Installing dependencies"
+          command: |
+            sudo pip install setuptools wheel twine bumpversion
+            source .circleci/pypi-helper.sh
+
+      - run:
+          name: "Building Package"
+          command: |
+            mds_patch_package_name
+            mds_build_package
+
+      - run:
+          name: "Deploy Package"
+          command: mds_deploy_package
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+              - dev
+              - master
