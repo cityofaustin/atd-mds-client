@@ -1,5 +1,13 @@
 """
+Class: MDSAuth
 
+Author: Austin Transportation Department, Data and Technology Services
+
+Description: The purpose of this class is to provide an extensible model that
+allows different authentication methods for different providers.
+
+The application requires the requests library:
+    https://pypi.org/project/requests/
 """
 
 import base64
@@ -48,6 +56,11 @@ class MDSAuth:
             )
 
     def mds_oauth(self):
+        """
+        Attempts to obtain a JWT or Access token from an OAuth provider, then it generates headers.
+        It raises an exception if it fails to gather a token.
+        :return dict:
+        """
         logging.debug("MDSAuth::mds_oauth() Running OAuth authentication")
         auth_data = self.config.get("auth_data", {})
         token_url = self.config.get("token_url", None)
@@ -78,11 +91,19 @@ class MDSAuth:
             raise Exception("MDSAuth::mds_oauth() Token could not be resolved.")
 
     def mds_auth_token(self):
+        """
+        Generates headers for token-bearer authentication. Raises an exception if it fails.
+        :return dict:
+        """
         logging.debug("MDSAuth::mds_auth_token() Running Token authentication")
         self.headers = {"Authorization": f'Bearer {self.config["token"]}'}
         return self.headers
 
     def mds_http_basic(self):
+        """
+        It generates a basic auth HTTP header, or raises an exception if it fails.
+        :return dict:
+        """
         logging.debug("MDSAuth::mds_oauth() Running HTTP Basic authentication")
         auth_data = self.config.get("auth_data", None)
         if auth_data:
@@ -96,15 +117,9 @@ class MDSAuth:
         else:
             raise Exception("No credentials provided")
 
-        return None
-
-    def mds_auth_custom(self):
-        logging.debug("MDSAuth::mds_oauth() Running Custom authentication")
-        pass
-
     def mds_custom_auth(self):
+        """
+        Runs a custom authentication function, it assumes it manages error handling.
+        :return dict:
+        """
         return self.custom_function(self.config)
-
-    def _gather_oauth_token(self):
-        logging.debug("MDSAuth::_gather_oauth_token() Gathering OAuth token")
-        pass
