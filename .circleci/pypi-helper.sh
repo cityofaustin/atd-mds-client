@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-CIRCLE_BRANCH="powpowpow";
-
 if [[ "${CIRCLE_BRANCH}" = "master" ]]; then
     export BUILD_ENV="master";
 else
