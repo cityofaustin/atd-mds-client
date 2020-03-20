@@ -31,11 +31,11 @@ provider_configuration = {
     # Authentication type: "OAuth", "Bearer", "Basic" or "Custom"
     "auth_type": "Bearer",
     # If you have a Bearer authentication, provide the token:
-    "token": "...secret...token...here",
+    "token": "secret_token_here",
     # Provide the URL endpoint of the provider:
     "mds_api_url": "https://mds.your-scooter-company.com/api/endpoint/v1",
     # (Optional) The Provider ID
-    "provider_id": "...mds...provider...id",
+    "provider_id": "mds_provider_id",
     # Any additional HTTP Headers:
     "headers": {
         "App-Version": "3.0.0"
