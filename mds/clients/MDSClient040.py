@@ -10,7 +10,7 @@ https://github.com/openmobilityfoundation/mobility-data-specification/tree/maste
 The application requires the requests library:
     https://pypi.org/project/requests/
 """
-
+from datetime import datetime, timezone
 from .MDSClientBase import MDSClientBase
 
 # Debug & Logging
@@ -19,11 +19,6 @@ import logging
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
-"""
-    Version 0.4.0 is new and under construction.
-    For now, it is a copy of v0.3.0
-"""
 
 
 class MDSClient040(MDSClientBase):
@@ -37,8 +32,8 @@ class MDSClient040(MDSClientBase):
     # Parameters based on this documentation:
     # https://github.com/openmobilityfoundation/mobility-data-specification/tree/0.3.x/provider#trips-query-parameters
     param_schema = {
-        "start_time": "min_end_time",
-        "end_time": "max_end_time",
+        "start_time": "start_time",
+        "end_time": "end_time",
         "bbox": "bbox",
         "device_id": "device_id",
         "vehicle_id": "vehicle_id",
@@ -91,37 +86,38 @@ class MDSClient040(MDSClientBase):
         """
         return data.get("payload", {}).get("version", self.version)
 
+    @staticmethod
+    def _adjust_time(time):
+        """
+        Returns the same time in unix timestamp minus one hour.
+        :param int time: the unix epoch time to be adjusted
+        :return int:
+        """
+        return time - 3600
+
+    @staticmethod
+    def _convert_format(time):
+        """
+        Turns a unix epoch timestamp into a date "yyyy-mm-ddYhh" format.
+        :param int time: the unix epoch time to be converted
+        :return str:
+        """
+        return datetime.fromtimestamp(time, tz=timezone.utc).strftime("%Y-%m-%dT%H")
+
     def get_trips(
-        self,
-        start_time,
-        end_time,
-        **kwargs,
+        self, end_time, **kwargs,
     ):
         """
         Returns a JSON dictionary with a list of all
-        :param int start_time: The start time in unix format
         :param int end_time: The end time in unix format
         :param str vehicle_id: (Optional) The vehicle ID
         :param str bbox: (Optional) Specify a bounding box (e.g., bbox="-122.4183,37.7758,-122.4120,37.7858")
         :param bool paging: (Optional) An override to paging. Set to True to enable it.
         :return dict:
         """
-        logging.debug(
-            "MDSClient040::get_trips() Getting trips: %s %s "
-            % (start_time, end_time)
-        )
+        logging.debug("MDSClient040::get_trips() Getting trips: %s " % (end_time))
 
-        params = {
-            **{
-                "start_time": int(round(start_time * 1000)),
-                "end_time": int(round(end_time * 1000))
-            },
-            **kwargs
-        }
-
-        # Set the required URI parameters
-        for key, value in params.items():
-            self.params[self.param_schema[key]] = value
+        self._load_params(end_time=end_time, **kwargs)
 
         # Out trips accumulator
         trips_accumulator = []
@@ -154,7 +150,9 @@ class MDSClient040(MDSClientBase):
 
             # 4. Quit loop if not paging
             if self.paging is False:
-                logging.debug("MDSClient040::get_trips() Paging set to False, stopping request...")
+                logging.debug(
+                    "MDSClient040::get_trips() Paging set to False, stopping request..."
+                )
                 break
 
             # 5. The `next` link becomes our new endpoint
@@ -171,7 +169,30 @@ class MDSClient040(MDSClientBase):
         # Return trips in this envelope:
         return {
             "version": self._get_response_version(data),
-            "data": {
-                "trips": trips_accumulator
-            }
+            "data": {"trips": trips_accumulator},
         }
+
+    def _load_params(self, end_time, **kwargs):
+        """
+        Takes the parameters from the configuration and start time
+        and loads them into our self.params dictionary.
+        :param int end_time: The hour we need data for (as specified in MDS 0.4.0)
+        :param dict kwargs: Any additional parameters to be taken as HTTP param.
+        :return:
+        """
+
+        final_end_time = self._convert_format(
+            time=self._adjust_time(
+                time=end_time
+            )
+        )
+
+        params = {**{"end_time": final_end_time, **kwargs}}
+
+        # Set the required URI parameters
+        for key, value in params.items():
+            self.params[self.param_schema[key]] = value
+
+        # Delete the end_time parameter (if present)
+        if "start_time" in self.params:
+            del self.params["start_time"]

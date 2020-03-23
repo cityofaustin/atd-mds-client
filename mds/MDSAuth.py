@@ -29,16 +29,22 @@ class MDSAuth:
     def __init__(self, config, custom_function=None):
         """
         Initializes the class and the internal configuration
-        :param dict config:
+        :param dict config: The dictionary containing the configuration
         :param function custom_function: A python function to run as a custom authentication
         """
         self.config = config
         self.custom_function = custom_function
-        auth_type = self.config.get("auth_type", None)
         self.headers = None
 
+        # We gather the value from the auth_type key in the config dict, assume None.
+        auth_type = self.config.get("auth_type", None)
+
+        # If provided
         if auth_type:
             logging.debug(f"MDSAuth::__init__() Authentication method: {auth_type}")
+            # assign to self.authenticate from a key > value array,
+            # where the value is a function. The selection is based
+            # on the lower case of auth_type
             self.authenticate = {
                 "oauth": self.mds_oauth,
                 "bearer": self.mds_auth_token,
@@ -122,4 +128,5 @@ class MDSAuth:
         Runs a custom authentication function, it assumes it manages error handling.
         :return dict:
         """
-        return self.custom_function(self.config)
+        self.headers = self.custom_function(self.config)
+        return self.headers

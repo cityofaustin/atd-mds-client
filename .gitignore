@@ -134,3 +134,4 @@ dmypy.json
 # IDEs
 .idea/
 .vscode/
+*.json

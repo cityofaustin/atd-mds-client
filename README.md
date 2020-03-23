@@ -31,11 +31,11 @@ provider_configuration = {
     # Authentication type: "OAuth", "Bearer", "Basic" or "Custom"
     "auth_type": "Bearer",
     # If you have a Bearer authentication, provide the token:
-    "token": "...secret...token...here",
+    "token": "secret_token_here",
     # Provide the URL endpoint of the provider:
     "mds_api_url": "https://mds.your-scooter-company.com/api/endpoint/v1",
     # (Optional) The Provider ID
-    "provider_id": "...mds...provider...id",
+    "provider_id": "mds_provider_id",
     # Any additional HTTP Headers:
     "headers": {
         "App-Version": "3.0.0"
@@ -106,6 +106,13 @@ Pull requests are ignored by the CD/CI pipeline, meaning they do not get built. 
 How about local development?
 
 At the moment, local development is open-ended. You may use any python mechanism or style when including source python packages in your development and local tests.
+
+# Tests
+
+Some minimal unit testing has been done for the mds library; however, the testing is not thorough and it was only implemented as a way to test basic functionality. 
+
+For more instructions and documentation, please follow this link:
+https://github.com/cityofaustin/atd-mds-client/blob/master/tests
 
 # License
 
