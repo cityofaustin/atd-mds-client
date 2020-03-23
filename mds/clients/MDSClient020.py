@@ -103,17 +103,10 @@ class MDSClient020(MDSClientBase):
             % (start_time, end_time)
         )
 
-        params = {
-            **{
-                "start_time": int(start_time),
-                "end_time": int(end_time)
-            },
-            **kwargs
-        }
-
-        # Set the required URI parameters
-        for key, value in params.items():
-            self.params[self.param_schema[key]] = value
+        self._load_params(
+            start_time=start_time,
+            end_time=end_time
+        )
 
         # Out trips accumulator
         trips_accumulator = []
@@ -167,3 +160,25 @@ class MDSClient020(MDSClientBase):
                 "trips": trips_accumulator
             }
         }
+
+    def _load_params(self, start_time, end_time, **kwargs):
+        """
+        Takes the parameters from the configuration and start time
+        and loads them into our self.params dictionary.
+        :param int start_time: The min_time_end hour we need data for (as specified in MDS 0.3.0)
+        :param int end_time: The max_time_end hour we need data for (as specified in MDS 0.3.0)
+        :param dict kwargs: Any additional parameters to be taken as HTTP param.
+        :return:
+        """
+
+        params = {
+            **{
+                "start_time": int(round(start_time)),
+                "end_time": int(round(end_time))
+            },
+            **kwargs
+        }
+
+        # Set the required URI parameters
+        for key, value in params.items():
+            self.params[self.param_schema[key]] = value
