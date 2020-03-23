@@ -107,6 +107,13 @@ How about local development?
 
 At the moment, local development is open-ended. You may use any python mechanism or style when including source python packages in your development and local tests.
 
+# Tests
+
+Some minimal unit testing has been done for the mds library; however, the testing is not thorough and it was only implemented as a way to test basic functionality. 
+
+For more instructions and documentation, please follow this link:
+https://github.com/cityofaustin/atd-mds-client/blob/master/tests
+
 # License
 
 The package is distributed under the GPL 3.0 license.
