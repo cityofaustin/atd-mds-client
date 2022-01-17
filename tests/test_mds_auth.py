@@ -51,7 +51,7 @@ class TestMDSAuth:
         Tests mds_oauth and checks if the client's headers are initialized
         """
         auth_client = MDSAuth(
-            config=self.config["jump"], custom_function=None
+            config=self.config["free2move"], custom_function=None
         )
         auth_client.mds_oauth()
         assert isinstance(auth_client.headers, dict) and \
