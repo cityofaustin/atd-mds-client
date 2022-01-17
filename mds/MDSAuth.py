@@ -70,10 +70,20 @@ class MDSAuth:
         logging.debug("MDSAuth::mds_oauth() Running OAuth authentication")
         auth_data = self.config.get("auth_data", {})
         token_url = self.config.get("token_url", None)
+        request_settings = self.config.get("request", None)
+        request_headers = {}
+
+        if request_settings is None:
+            pass
+        else:
+            try:
+                request_headers = request_settings["auth"]["headers"]
+            except KeyError:
+                request_headers = {}
 
         logging.debug("MDSAuth::mds_oauth() Making OAuth HTTP Request...")
         if token_url:
-            response = requests.post(token_url, data=auth_data)
+            response = requests.post(token_url, data=auth_data, headers=request_headers)
         else:
             raise Exception(
                 "MDSAuth::mds_oauth() No token_url defined in the settings."
