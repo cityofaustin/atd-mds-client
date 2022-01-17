@@ -21,6 +21,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: Public Domain",
         "Operating System :: OS Independent",
-        "Development Status :: Beta",
+        "Development Status :: 4 - Beta",
     ),
 )
