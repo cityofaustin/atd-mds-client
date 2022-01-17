@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="atd-mds-client",
-    version="0.0.4",
+    version="0.0.5",
     author="City of Austin",
     author_email="transportation.data@austintexas.gov",
     description="A Python utility to interact data endpoints compliant with the Mobility Data Specification, as designed by the Open Mobility Foundation",
@@ -21,6 +21,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: Public Domain",
         "Operating System :: OS Independent",
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Beta",
     ),
 )
